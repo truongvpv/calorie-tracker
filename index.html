@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .app-title {
+            color: #1a73e8;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: calc(100vh - 150px);
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .card-header {
+            background: #1a73e8;
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1rem;
+        }
+
+        .card-header h5 {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .total-box {
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+
+        .total-calories {
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .total-calories-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .nutrients-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .nutrient-box {
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .nutrient-box.carbs {
+            background: linear-gradient(135deg, #FF6B6B, #ee5253);
+        }
+
+        .nutrient-box.protein {
+            background: linear-gradient(135deg, #4834d4, #686de0);
+        }
+
+        .nutrient-box.fat {
+            background: linear-gradient(135deg, #20bf6b, #26de81);
+        }
+
+        .nutrient-value {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .nutrient-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .search-result {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-result:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-color: #1a73e8;
+        }
+
+        .food-item {
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: all 0.2s ease;
+        }
+
+        .food-item:hover {
+            background: #e9ecef;
+        }
+
+        .nutrients-info {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .btn-primary {
+            background: #1a73e8;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #0d47a1;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            padding: 0.6rem 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25);
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group-text {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .quantity-input {
+            max-width: 120px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1a73e8;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0d47a1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card {
+                height: auto;
+                margin-bottom: 1rem;
+            }
+            
+            .app-container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <h1 class="app-title">Calorie Tracker</h1>
+        
+        <div class="row g-4">
+            <!-- Left Column - Food Search -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Add Food</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Search Box -->
+                        <div class="mb-3">
+                            <input type="text" id="foodSearch" class="form-control" placeholder="Search for food...">
+                        </div>
+
+                        <!-- Calorie Range Filter -->
+                        <div class="row mb-3">
+                            <div class="col">
+                                <input type="number" id="minCalories" class="form-control" placeholder="Min calories">
+                            </div>
+                            <div class="col">
+                                <input type="number" id="maxCalories" class="form-control" placeholder="Max calories">
+                            </div>
+                        </div>
+
+                        <!-- Search Results -->
+                        <div id="searchResults" class="list-group mt-3">
+                            <!-- Results will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Today's Summary -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Today's Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Total Nutrients Box -->
+                        <div class="total-box">
+                            <div class="total-calories-label">Total Calories</div>
+                            <div class="total-calories" id="totalCalories">0</div>
+                            
+                            <div class="nutrients-grid">
+                                <div class="nutrient-box carbs">
+                                    <div class="nutrient-value"><span id="totalCarbs">0</span>g</div>
+                                    <div class="nutrient-label">Carbs</div>
+                                </div>
+                                <div class="nutrient-box protein">
+                                    <div class="nutrient-value"><span id="totalProtein">0</span>g</div>
+                                    <div class="nutrient-label">Protein</div>
+                                </div>
+                                <div class="nutrient-box fat">
+                                    <div class="nutrient-value"><span id="totalFat">0</span>g</div>
+                                    <div class="nutrient-label">Fat</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Food List -->
+                        <h6 class="mb-3">Foods Added Today</h6>
+                        <div id="foodList" class="list-group">
+                            <!-- Added foods will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
