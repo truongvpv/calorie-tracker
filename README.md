@@ -16,10 +16,6 @@ A web-based calorie tracking application that allows users to search for foods a
 2. Open `index.html` in your browser
 3. Start tracking your calories!
 
-## API Keys
-
-The application uses the USDA Food Data Central API. The API keys are stored in `config.js`. 
-
 ## Technologies Used
 
 - HTML5
